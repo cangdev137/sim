@@ -1,2 +1,2 @@
 # sim
-vim-like text editor
+it's like vim except not at all except kind of
