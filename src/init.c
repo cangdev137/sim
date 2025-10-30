@@ -10,6 +10,8 @@ text_editor editor;
 int main(){
     printf("starting sim...\n");
 
+    int c = read_user_input();
+    printf("recieved %c\n", c);
 
     printf("terminating.\n");
     return 0;

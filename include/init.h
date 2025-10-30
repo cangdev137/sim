@@ -14,7 +14,9 @@
 //macros
 #define MAX_LINES 1000
 #define MAX_LINE_LENGTH 256
+#define ESC_KEY 0x1b
 #define ctrl_plus(k) ((k) & 0x1f)
+
 
 //custom types
 typedef enum { normal_mode, insert_mode, command_mode } editor_mode;
