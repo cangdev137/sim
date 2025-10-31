@@ -1,7 +1,6 @@
 #ifndef INIT_H
 #define INIT_H
 
-//required libs
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,20 +10,45 @@
 #include <errno.h>
 #include <sys/ioctl.h>
 
-//macros
+/* MACROS */
 #define MAX_LINES 1000
 #define MAX_LINE_LENGTH 256
+#define ARROW_UP 1000
+#define ARROW_DOWN 1001
+#define ARROW_RIGHT 1002
+#define ARROW_LEFT 1003
 #define ESC_KEY 0x1b
 #define ctrl_plus(k) ((k) & 0x1f)
 
+/* FUNCTIONS */
+//terminal.c
+//display an error and terminate program
+void show_error_and_exit(const char* message);
+//restore default terminal settings
+void restore_terminal();
+//configure raw terminal for program
+void raw_terminal();
 
-//custom types
+//fileio.c
+//load file contents into editor
+void load_file(const char* filename);
+//save editor contents to file
+void save_to_file();
+
+//textio.c
+//read a single byte from the user input
+int read_user_input();
+
+
+
+/* TYPEDEF */
+//editor mode
 typedef enum { normal_mode, insert_mode, command_mode } editor_mode;
 
 //main editor data
 typedef struct{
     char text_lines[MAX_LINES][MAX_LINE_LENGTH];
-    editor_mode mode;
+    editor_mode current_mode;
     int total_lines;
     int cursor_x, cursor_y; //
     char filename[256];
@@ -33,8 +57,9 @@ typedef struct{
     int has_unsaved_changes;
 } text_editor;
 
-//global vars
+/* GLOBAL VARIABLES */
 extern struct termios original_terminal_settings;
+extern text_editor editor;
 
 #endif
 

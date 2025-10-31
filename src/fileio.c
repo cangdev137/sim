@@ -1,4 +1,4 @@
-#include <init.h>
+#include <defs.h>
 
 //load file into editor
 void load_file(const char* filename){
