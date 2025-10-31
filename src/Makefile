@@ -1,6 +1,6 @@
 CC = gcc
-SOURCES= init.c terminal.c
+SOURCES= init.c terminal.c fileio.c
 CFLAGS = -I ../include/
 
-sim: init.c terminal.c
+sim: ${SOURCES}
 	${CC} ${CFLAGS} ${SOURCES}
