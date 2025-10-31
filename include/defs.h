@@ -1,5 +1,5 @@
-#ifndef INIT_H
-#define INIT_H
+#ifndef DEFS_H
+#define DEFS_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,7 +39,15 @@ void save_to_file();
 //read a single byte from the user input
 int read_user_input();
 
+//cursor.c
+//move cursor based on key press
+void handle_cursor_movement(int direction);
 
+//commands.c
+//clear screen and smoothly exit
+void clear_screen_and_exit();
+//execute editor command
+void execute_command();
 
 /* TYPEDEF */
 //editor mode
