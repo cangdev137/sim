@@ -3,7 +3,6 @@
 //get terminal window size
 void get_terminal_dimensions(int* rows, int* columns){
     struct winsize window_size;
-
     if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &window_size) == -1 || window_size.ws_col == 0){
         *rows = 24;
         *columns = 80;
@@ -33,7 +32,13 @@ void refresh_display(){
             int info_length = snprintf(line_info, sizeof(line_info), "%4d ", row+1);
 
             write(STDOUT_FILENO, line_info, info_length);
-            write(STDOUT_FILENO, editor.text_lines[row], strlen(editor.text_lines[row]));
+
+            //truncate overflowing empty text so it cannot wrap
+            int max_content = terminal_columns - info_length;
+            if (max_content < 0) max_content = 0;
+            size_t content_len = strlen(editor.text_lines[row]);
+            if((int) content_len > max_content) content_len = (size_t) max_content;
+            write(STDOUT_FILENO, editor.text_lines[row], content_len);
         }
         else{
             write(STDOUT_FILENO, "   ~", 4);
@@ -48,14 +53,14 @@ void refresh_display(){
 
     //display status line at bottom
     char position_buffer[32];
-    char status_line[512];
-
     snprintf(position_buffer, sizeof(position_buffer), "\x1b[%d;1H", terminal_rows-1);
     write(STDOUT_FILENO, position_buffer, strlen(position_buffer));
     write(STDOUT_FILENO, "\x1b[7m", 4); //invert colors for status bar
-    int status_length = snprintf(status_line, sizeof(status_line), " %s %s", 
-                                 (strlen(editor.filename) > 0 ? editor.filename :
-                                  (editor.has_unsaved_changes ? "[+]" : "")));
+                                        
+    char status_line[512];
+    const char *fname = (editor.filename[0] ? editor.filename : "[No Name]");
+    const char *modStatus = (editor.has_unsaved_changes ? "(modified)" : "");
+    int status_length = snprintf(status_line, sizeof(status_line), "%.255s %s", fname, modStatus);
 
     //position cursor
     char position_info[32];

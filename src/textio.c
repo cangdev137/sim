@@ -73,6 +73,14 @@ void split_line_at_cursor(){
     editor.has_unsaved_changes = 1;
 }
 
+void delete_character_under_cursor(){
+    if (editor.cursor_x < strlen(editor.text_lines[editor.cursor_y])) {
+        memmove(&editor.text_lines[editor.cursor_y][editor.cursor_x], 
+                &editor.text_lines[editor.cursor_y][editor.cursor_x + 1], 
+                    strlen(editor.text_lines[editor.cursor_y]) - editor.cursor_x);
+        editor.has_unsaved_changes = 1;
+    }
+}
 void delete_character_before_cursor(){
     if (editor.cursor_x == 0 && editor.cursor_y == 0){
         return;

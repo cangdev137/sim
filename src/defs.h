@@ -38,6 +38,10 @@ void save_to_file();
 //textio.c
 //read a single byte from the user input
 int read_user_input();
+void insert_char_at_cursor(char insertChar);
+void split_line_at_cursor();
+void delete_character_under_cursor();
+void delete_character_before_cursor();
 
 //cursor.c
 //move cursor based on key press
@@ -48,6 +52,10 @@ void handle_cursor_movement(int direction);
 void clear_screen_and_exit();
 //execute editor command
 void execute_command();
+
+//display.c
+void get_terminal_dimensions(int* rows, int* columns);
+void refresh_display();
 
 /* TYPEDEF */
 //editor mode
